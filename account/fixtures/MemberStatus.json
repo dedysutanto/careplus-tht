@@ -1,0 +1,18 @@
+[
+{
+    "model": "account.memberstatus",
+    "pk": 1,
+    "fields": {
+        "name": "Doctor",
+        "is_clinic": false
+    }
+},
+{
+    "model": "account.memberstatus",
+    "pk": 2,
+    "fields": {
+        "name": "Clinic",
+        "is_clinic": true
+    }
+}
+]

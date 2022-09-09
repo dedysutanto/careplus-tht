@@ -1,0 +1,120 @@
+{% load wagtailadmin_tags wagtailcore_tags i18n %}
+<html>
+<head>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ careplus_base_url }}{% versioned_static 'invoice/css/style.css' %}">
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/1f8a7ef47d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="col-md-12">
+ <div class="row">
+
+        <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="row">
+    			<div class="receipt-header">
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<div class="receipt-left">
+							<img class="img-responsive" alt="careplus" src="{{ careplus_base_url }}{% versioned_static 'dashboard/images/careplus.png' %}" style="width: 80px; height: 50px;">
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 text-right">
+						<div class="receipt-right">
+							{% if invoice.user.membership.is_clinic %}
+                                <h5>{{ invoice.user.clinic_name }}</h5>
+                            {% else %}
+                                <h5>{{ invoice.user.first_name }} {{ invoice.user.last_name }}</h5>
+                            {% endif %}
+
+                            {% if invoice.user.phone %}
+                                <p>{{ invoice.user.phone }} <i class="fa fa-phone"></i></p>
+                            {% endif %}
+                            {% if invoice.user.email %}
+                                <p>{{ invoice.user.email }} <i class="fa fa-envelope-o"></i></p>
+                            {% endif %}
+                            {% if invoice.user.address %}
+                                <p>{{ invo
+						</div>
+					</div>
+				</div>
+            </div>
+
+			<div class="row">
+				<div class="receipt-header receipt-header-mid">
+					<div class="col-xs-8 col-sm-8 col-md-8 text-left">
+						<div class="receipt-right">
+							<h5>{{ invoice.patient.name }}</h5>
+                            <p><i class="fa-solid fa-file-medical"></i> {{ invoice.patient.number }}</p>
+							{% if invoice.patient.phone %}
+                            <p><i class="fa fa-phone"></i> {{ invoice.patient.phone }}</p>
+                            {% endif %}
+                            {% if invoice.patient.email %}
+                            <p><i class="fa fa-envelope-o"></i> {{ invoice.patient.email }}</p>
+                            {% endif %}
+                            {% if invoice.patient.address %}
+                            <p><i class="fa fa-location-arrow"></i> {{ invoice.patient.address }}</p>
+                            {% endif %}
+						</div>
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-4">
+						<div class="receipt-right text-right">
+							<h5>{{ invoice.number }}</h5>
+                            <p>{{ invoice.datetime }}</p>
+						</div>
+					</div>
+				</div>
+            </div>
+
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Description</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-center">Cost</th>
+                            <th class="text-center">Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in invoice_item %}
+                        <tr>
+                            <td class="col-md-6 text-left">{{ item.item }}</td>
+                            <td class="col-md-1 text-center">{{ item.quantity }}</td>
+                            <td class="col-md-3 text-right">{{ item.cost }}</td>
+                            <td class="col-md-3 text-right">{% widthratio item.quantity 1 item.cost %}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right"><h2><strong>Total </strong></h2></td>
+                            <td class="text-right text-dark"><h2><strong>{{ total|intcomma }}</strong></h2></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+			<div class="row">
+				<div class="receipt-header receipt-header-mid receipt-footer">
+					<div class="col-xs-8 col-sm-8 col-md-8 text-left">
+						<div class="receipt-right">
+							<h5>Diagnosis ({{ invoice.soap.number }})</h5>
+                            <p>{{ invoice.soap.assessment|linebreaks }}</p>
+							<br />
+                            <h5 style="color: rgb(140, 140, 140);">Stay Healthy!</h5>
+						</div>
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-4">
+						<div class="receipt-left">
+							<h1>Doctor Signature</h1>
+						</div>
+					</div>
+				</div>
+            </div>
+
+        </div>
+	</div>
+</div>
+</body>
+</html>
