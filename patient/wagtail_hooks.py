@@ -107,7 +107,7 @@ class SoapsAdmin(ModelAdmin):
     add_to_admin_menu = True  # or False to exclude your model from the menu
     list_display = (
         'number', 'doctor', 'patient', 'datetime', 'subjective', 'objective',
-        'assessment', 'plan', 'additional_info',
+        'assessment', 'plan', 'additional_info', 'image',
     )
     list_filter = ('doctor',)
     search_fields = ('number', 'doctor', 'patient__name',)
