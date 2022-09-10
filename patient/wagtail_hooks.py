@@ -2,8 +2,9 @@ from wagtail.contrib.modeladmin.options import (
     ModelAdmin, modeladmin_register, PermissionHelper, EditView)
 from .models import Patients, Soaps, NextAppointment
 from crum import get_current_user
-from config.utils import calculate_age
+from config.utils import calculate_age, time_different
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.timezone import localtime
 
 
 class PatientsEditView(EditView):
@@ -15,9 +16,14 @@ class PatientsEditView(EditView):
     def get_page_subtitle(self):
         try:
             next_v = NextAppointment.objects.get(patient=self.instance)
-            return '{} ({}) - Next Visit: {}'.format(self.instance,
-                                                     calculate_age(self.instance.dob),
-                                                     next_v.datetime.strftime("%A %d %b %Y, %H:%M"))
+
+            return '{} ({}) - Next Visit: {} ({})'.format(
+                    self.instance,
+                    calculate_age(self.instance.dob),
+                    localtime(next_v.datetime).strftime("%A %d %b %Y, %H:%M"),
+                    time_different(next_v.datetime)
+            )
+
         except ObjectDoesNotExist:
             return '%s (%d)' % (self.instance, calculate_age(self.instance.dob))
 
